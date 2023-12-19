@@ -1,0 +1,156 @@
+basePath: /api/v1
+definitions:
+  model.Fundmt:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  model.Token:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+host: localhost
+info:
+  contact: {}
+  description: 人脸识别API
+  title: FaceRecognize API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: 登录前首页
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 首页
+      tags:
+      - handler
+  /getcode:
+    post:
+      consumes:
+      - application/json
+      description: 获得邮箱验证码
+      parameters:
+      - description: 邮箱
+        in: formData
+        name: Email
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: Password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "402":
+          description: Payment Required
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 获得验证码
+      tags:
+      - user
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 账密登录
+      parameters:
+      - description: 邮箱
+        in: formData
+        name: Email
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: Password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Token'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "402":
+          description: Payment Required
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 登录
+      tags:
+      - user
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: 使用邮箱验证码
+      parameters:
+      - description: 邮箱
+        in: formData
+        name: Email
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: Password
+        required: true
+        type: string
+      - description: 验证码
+        in: formData
+        name: Code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "402":
+          description: Payment Required
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 注册
+      tags:
+      - user
+swagger: "2.0"
