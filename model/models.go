@@ -13,7 +13,7 @@ type UserTmp struct{
 	Code string
 }
 type Claims struct{
-	ID string
+	Email string
 	jwt.StandardClaims
 }
 

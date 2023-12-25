@@ -39,6 +39,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/check": {
+            "get": {
+                "description": "GET页面",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "检查验证码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Fundmt"
+                        }
+                    }
+                }
+            }
+        },
         "/getcode": {
             "post": {
                 "description": "获得邮箱验证码",
@@ -59,20 +82,13 @@ const docTemplate = `{
                         "name": "Email",
                         "in": "formData",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "密码",
-                        "name": "Password",
-                        "in": "formData",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Fundmt"
+                            "$ref": "#/definitions/model.Token"
                         }
                     },
                     "401": {
@@ -83,6 +99,29 @@ const docTemplate = `{
                     },
                     "402": {
                         "description": "Payment Required",
+                        "schema": {
+                            "$ref": "#/definitions/model.Fundmt"
+                        }
+                    }
+                }
+            }
+        },
+        "/inputpassword": {
+            "get": {
+                "description": "GET页面",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "输入密码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/model.Fundmt"
                         }
@@ -148,8 +187,8 @@ const docTemplate = `{
             }
         },
         "/register": {
-            "post": {
-                "description": "使用邮箱验证码",
+            "get": {
+                "description": "GET注册页面",
                 "consumes": [
                     "application/json"
                 ],
@@ -159,27 +198,41 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "注册",
+                "summary": "注册页面",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Fundmt"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "比较验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "检查验证码并注册",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "邮箱",
-                        "name": "Email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "密码",
-                        "name": "Password",
-                        "in": "formData",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "验证码",
                         "name": "Code",
                         "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -196,14 +249,60 @@ const docTemplate = `{
                             "$ref": "#/definitions/model.Fundmt"
                         }
                     },
-                    "402": {
-                        "description": "Payment Required",
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/model.Fundmt"
+                        }
+                    }
+                }
+            }
+        },
+        "/setpassword": {
+            "post": {
+                "description": "输入两个密码并检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "设置密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "输入密码",
+                        "name": "Password1",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "再次输入密码",
+                        "name": "Password2",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/model.Fundmt"
                         }
                     },
-                    "403": {
-                        "description": "Forbidden",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/model.Fundmt"
                         }

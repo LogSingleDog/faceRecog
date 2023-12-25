@@ -6,11 +6,11 @@ import(
 	"github.com/dgrijalva/jwt-go"
 )
 // GenToken 生成JWT
-func GenerateToken(UserId string) (string, error) {
+func GenerateToken(Email1 string) (string, error) {
 	// 创建一个我们自己的声明
 	expireTime := time.Now().Add(30 * 24 * time.Hour)
 	claims := model.Claims{
-		ID:UserId, // 自定义字段
+		Email:Email1, // 自定义字段
 		StandardClaims:jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(), //过期时间
 			IssuedAt:  time.Now().Unix(),
@@ -35,7 +35,7 @@ func GetToken(c *gin.Context) string {
 	if err != nil || !token.Valid {
 		return "0"
 	}
-	return claims.ID
+	return claims.Email
 }
 func ParseToken(tokenString string) (*jwt.Token, *model.Claims, error) {
 	Claims := &model.Claims{}

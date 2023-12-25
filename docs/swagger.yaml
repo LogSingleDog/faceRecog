@@ -38,6 +38,21 @@ paths:
       summary: 首页
       tags:
       - handler
+  /check:
+    get:
+      consumes:
+      - application/json
+      description: GET页面
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 检查验证码
+      tags:
+      - user
   /getcode:
     post:
       consumes:
@@ -49,18 +64,13 @@ paths:
         name: Email
         required: true
         type: string
-      - description: 密码
-        in: formData
-        name: Password
-        required: true
-        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Fundmt'
+            $ref: '#/definitions/model.Token'
         "401":
           description: Unauthorized
           schema:
@@ -70,6 +80,21 @@ paths:
           schema:
             $ref: '#/definitions/model.Fundmt'
       summary: 获得验证码
+      tags:
+      - user
+  /inputpassword:
+    get:
+      consumes:
+      - application/json
+      description: GET页面
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 输入密码
       tags:
       - user
   /login:
@@ -111,24 +136,33 @@ paths:
       tags:
       - user
   /register:
+    get:
+      consumes:
+      - application/json
+      description: GET注册页面
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 注册页面
+      tags:
+      - user
     post:
       consumes:
       - application/json
-      description: 使用邮箱验证码
+      description: 比较验证码
       parameters:
-      - description: 邮箱
-        in: formData
-        name: Email
-        required: true
-        type: string
-      - description: 密码
-        in: formData
-        name: Password
-        required: true
-        type: string
       - description: 验证码
         in: formData
         name: Code
+        required: true
+        type: string
+      - description: token
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -142,15 +176,46 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/model.Fundmt'
-        "402":
-          description: Payment Required
-          schema:
-            $ref: '#/definitions/model.Fundmt'
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/model.Fundmt'
-      summary: 注册
+      summary: 检查验证码并注册
+      tags:
+      - user
+  /setpassword:
+    post:
+      consumes:
+      - application/json
+      description: 输入两个密码并检查
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 输入密码
+        in: formData
+        name: Password1
+        required: true
+        type: string
+      - description: 再次输入密码
+        in: formData
+        name: Password2
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Fundmt'
+      summary: 设置密码
       tags:
       - user
 swagger: "2.0"

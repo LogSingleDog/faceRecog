@@ -4,13 +4,14 @@ import(
 	"gopkg.in/gomail.v2"
 	"log"
 	"github.com/spf13/viper"
+	"github.com/gin-gonic/gin"
 )
 func SendEmail(to string,code string) error{
 	email := gomail.NewMessage()
 	from:=viper.GetString("email.from")
 	email.SetHeader("From", from)
 	email.SetHeader("To", to)
-	email.SetHeader("Subject", "这是标题")
+	email.SetHeader("Subject", "邮箱验证码")
 	//你先别急，这里还得改
 	text:="您的验证码为"+code+",验证码10分钟内有效，请及时验证"
 	email.SetBody("text/html", text)
@@ -27,4 +28,10 @@ func SendEmail(to string,code string) error{
 	}
 	log.Println("发送成功")
 	return nil
+}
+
+func GetEmail(c *gin.Context) string{
+	emailtmp,_:=c.Get("Email")
+	email,_:=emailtmp.(string)
+	return email
 }
